@@ -17,19 +17,23 @@ type messageRequest struct {
 var digestToMessageMap map[string]string = map[string]string{}
 
 func main() {
+	// Initialize
 	r := chi.NewRouter()
 
+	// Setup Middleware
 	r.Use(middleware.RequestID)
 	r.Use(middleware.Logger)
 	r.Use(middleware.StripSlashes)
 	r.Use(setContentJSON)
 
+	// Setup routes
 	r.Get("/messages/{digest}", getMessagesHandler)
 	r.Post("/messages", postMessagesHandler)
 
 	http.ListenAndServe(":3000", r)
 }
 
+// Custom middleware
 func setContentJSON(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")

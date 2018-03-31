@@ -5,6 +5,7 @@ import (
 	"net/http"
 )
 
+// This interface allows errors returned from services to set the HTTP response code
 type HTTPError interface {
 	HTTPCode() int
 	HTTPResponse() []error
